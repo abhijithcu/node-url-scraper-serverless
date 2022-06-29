@@ -1,5 +1,7 @@
 # Install dependency
 npm install
+
+# Install serverless globally
 npm install -g serverless
 
 # To run Locally
