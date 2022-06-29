@@ -1,0 +1,36 @@
+service: ${self:custom.serviceName}
+
+variablesResolutionMode: 20210326
+
+useDotenv: true
+
+custom:
+  dotenv:
+    path: ./.env.${self:custom.stage}
+  stage: ${opt:stage,'dev'}
+  serviceName: scarp-url
+  region: ap-south-1
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
+  stage: ${self:custom.stage}
+  memorySize: 512
+  region: ${self:custom.region}
+  timeout: 30
+  environment:
+    STAGE: ${self:custom.stage}
+
+functions:
+  app:
+    handler: app.handler
+    description: URL SCARP
+    events:
+      - http: 
+          path: '/scarp'
+          cors: true
+          method: post
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline
